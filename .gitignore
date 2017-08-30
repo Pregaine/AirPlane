@@ -1,0 +1,12 @@
+SI/AirPlane.si4project/Backup/
+Doc/html/
+Doc/
+IAR/
+Keil/
+Library/CMSIS/Documentation/Core/html/
+Library/CMSIS/Documentation/DSP/html/
+Library/CMSIS/Documentation/
+SI/
+*.html
+*.pdf
+*.txt
