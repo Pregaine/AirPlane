@@ -1,6 +1,8 @@
 #ifndef _AIRPLANE_H_
 #define _AIRPLANE_H_
 
+#include "pid.h"
+
 typedef struct
 {
     int y_rudder;
@@ -14,13 +16,16 @@ typedef struct
 	
     TimerID tmr;
     TimerID zforce_tmr;
+    TimerID pid_tmr;
 
 }_AirPlane;
 
 #define _AIRPLANE_TMR 50    // 30mSec
 
 extern float AirPlane_z_force;
-
+extern _PID PID_Pitch;
+extern _PID PID_Row;
+extern _PID PID_Yaw;
 extern void AirPlane_Init( void );
 extern void AirPlane_Process( void );
 

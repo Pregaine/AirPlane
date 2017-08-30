@@ -6,6 +6,6 @@
 extern void SD0_Init(void);
 extern void SD_Val_Init(void);
 extern void SD_Process(void );
-extern unsigned char SD_WriteStr( char * str, unsigned char len);
+extern unsigned char SD_WriteStr( char *str );
 
 #endif

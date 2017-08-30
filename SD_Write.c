@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <string.h>
 #include "TimerManager.h"
@@ -7,6 +6,7 @@
 #include "diskio.h"
 #include "ff.h"
 #include "SD_Write.h"
+#include "Typedef.h"
 
 void SD_Process(void);
 void SD_get_line(char * buff, int len);
@@ -1048,8 +1048,14 @@ BYTE SD_Idle(void)
 }
 
 
-BYTE SD_WriteStr(char * str, BYTE len)
+BYTE SD_WriteStr( char * str )
 {
+    u8 i = 0, len;
+
+    for( ; str[ i ] != 0; i ++ )
+
+    len = i;
+
 	if ( SD_Buffer_Size == 0 )
 	{
 		// If new word is entered

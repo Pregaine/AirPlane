@@ -6,10 +6,16 @@
 #include "JY901.h"
 #include "Typedef.h"
 #include "Servo.h"
+#include "pid.h"
 
 _AirPlane AirPlane;
 
+_PID PID_Yaw = _PID_DEFAULTS;
+_PID PID_Row = _PID_DEFAULTS;
+_PID PID_Pitch = _PID_DEFAULTS;
+
 void AirPlane_z_force_detect( void );
+void AirPlane_PID( void );
 
 float AirPlane_z_force;
 
@@ -30,6 +36,21 @@ void AirPlane_Init( void )
     AirPlane.tmr = TM_CreateTimer( TIMER_ONECYCLE, _AIRPLANE_TMR, NULL );
 
     AirPlane.zforce_tmr = TM_CreateTimer( TIMER_ONECYCLE, 20, NULL );
+
+    AirPlane.pid_tmr = TM_CreateTimer( TIMER_ONECYCLE, 20, NULL );
+
+    PID_Pitch.Kp = 0;   // 比例係數
+    PID_Pitch.Ki = 0;   // 積分係數
+    PID_Pitch.Kd = 0;   // 微分係數
+    
+    PID_Row.Kp = 0;     // 比例係數
+    PID_Row.Ki = 0;     // 積分係數
+    PID_Row.Kd = 0;     // 微分係數
+    
+    PID_Yaw.Kp = 0;     // 比例係數
+    PID_Yaw.Ki = 0;     // 積分係數
+    PID_Yaw.Kd = 0;     // 微分係數    
+    // ----------------------------------------------------
 }
 
 void AirPlane_Process( void )
@@ -41,6 +62,8 @@ void AirPlane_Process( void )
 	int val = 1;
 	static int r_rudder = 0, l_rudder = 0;
 	// int x_sum = 0, y_sum = 0;
+
+	AirPlane_PID( );
     
     AirPlane_z_force_detect( );
 
@@ -50,8 +73,11 @@ void AirPlane_Process( void )
 	TM_StartTimer( AirPlane.tmr );
     //---------------------------------------------
     
-    AirPlane.x_rudder = stcAngle.Roll;
-    AirPlane.y_rudder = stcAngle.Pitch; 
+    // AirPlane.x_rudder = stcAngle.Roll;
+    // AirPlane.y_rudder = stcAngle.Pitch;
+
+    AirPlane.x_rudder = PID_Row.Out;
+    AirPlane.y_rudder = PID_Pitch.Out;
     //---------------------------------------------
 
     // up +180 -180 down +180 -180 y
@@ -144,3 +170,23 @@ void AirPlane_z_force_detect( void )
     AirPlane_z_force = az_avg / 5;
 }
 
+
+void AirPlane_PID()
+{
+    if( TM_GetTimerState( AirPlane.tmr ) != TIMER_STOP )
+        return;
+
+	TM_StartTimer( AirPlane.tmr );
+
+	PID_Pitch.Err = PID_Pitch.Ref - stcAngle.Pitch;
+
+	PID_Row.Err = PID_Row.Ref - stcAngle.Roll;
+
+	PID_Yaw.Err = PID_Yaw.Ref - stcAngle.Yaw;
+
+    PID_Pitch.calc( &PID_Pitch );
+
+	PID_Row.calc( &PID_Row );
+
+	PID_Yaw.calc( &PID_Yaw );
+}

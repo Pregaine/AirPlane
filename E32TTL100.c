@@ -98,11 +98,16 @@ void E32TTL100_Init( void )
     E32TTL100.tmr = TM_CreateTimer( TIMER_ONECYCLE, _E32TTL100_TMR, NULL );
 }
 
-void E32TTl100_WriteStr( char *buf, unsigned char len )
+void E32TTl100_WriteStr( char *buf )
 {
+    u8 i = 0, len;
     #if 0
     UART_Write( UART0, ( u8 *)buf, len );
     #endif
+
+    for( ; buf[ i ] != 0; i ++ )
+
+    len = i;    
     
     #if 1
 	// If a new word is being output
@@ -152,7 +157,6 @@ void E32TTL100_Output_Process( void )
 void E32TTL100_Process( void )
 {
     char str[ 64 ] = {0};
-    char len;
 
     E32TTL100_Output_Process( );
 
@@ -163,88 +167,82 @@ void E32TTL100_Process( void )
     // --------------------------------------------
 
     #if 1
+    sprintf( str, "%.3f, %.3f, %.3f", PID_Pitch.Out, PID_Row.Out, PID_Yaw.Out );
+    E32TTl100_WriteStr( str );
+    #endif
+
+    #if 1
     // Angle
     sprintf( str,"%.3f,%.3f,%.3f,", stcAngle.Roll, stcAngle.Pitch, stcAngle.Yaw );
-    len = strlen( str );
-    E32TTl100_WriteStr( str, len );  
-    // SD_WriteStr( str, len );
+    E32TTl100_WriteStr( str );  
+    // SD_WriteStr( str );
 
     // Acc
     sprintf( str, "%.3f,%.3f,%.3f,", stcAcc.Ax, stcAcc.Ay, stcAcc.Az );
-    len = strlen( str );
-    E32TTl100_WriteStr( str, len ); 
-    // SD_WriteStr( str, len );
+    E32TTl100_WriteStr( str ); 
+    // SD_WriteStr( str );
  
     // Gyro
 	sprintf( str, "%.3f,%.3f,%.3f,", stcGyro.Wx, stcGyro.Wy, stcGyro.Wz );
-    len = strlen( str );
-    E32TTl100_WriteStr( str, len );  
-    // SD_WriteStr( str, len );
+    E32TTl100_WriteStr( str );  
+    // SD_WriteStr( str );
 
     // Mag 
 	sprintf( str,"%d,%d,%d,", stcMag.Hx, stcMag.Hy, stcMag.Hz );
-    len = strlen( str );
-    E32TTl100_WriteStr( str, len );  
-    // SD_WriteStr( str, len );
+    E32TTl100_WriteStr( str );  
+    // SD_WriteStr( str );
 
     sprintf( str, "%.3f,%.3f,%.3f,%.3f,", stcQuaternion.q0, stcQuaternion.q1, stcQuaternion.q2, stcQuaternion.q3 );
-    len = strlen( str );
-    E32TTl100_WriteStr( str, len );
-    // SD_WriteStr( str, len );
+    E32TTl100_WriteStr( str );
+    // SD_WriteStr( str );
 
     // Pressure:%ld Height%.2f\r\n
     sprintf( str,"%ld,%.2f,", stcPress.lPressure, (float)stcPress.lAltitude/100 );
-    len = strlen( str );
-    E32TTl100_WriteStr( str, len );
-    // SD_WriteStr( str, len );
+    E32TTl100_WriteStr( str );
+    // SD_WriteStr( str );
     
     // GPS
     // sprintf( str,"%.3f GPSYaw:%.1fDeg GPSV:%.3fkm/h\r\n",(float)stcGPSV.sGPSHeight/10,(float)stcGPSV.sGPSYaw/10,(float)stcGPSV.lGPSVelocity/1000);
     // Ground Speed
     sprintf( str, "%.3f,", (float)stcGPSV.lGPSVelocity/1000 );
-    len = strlen( str );
-    E32TTl100_WriteStr( str, len );
-    // SD_WriteStr( str, len );
+    E32TTl100_WriteStr( str );
+    // SD_WriteStr( str );
     
     // Air Speed
-    sprintf( str, "%.3f,", MS4525DO.airspeed );
-    len = strlen( str );    
-    E32TTl100_WriteStr( str, len ); 
-    // SD_WriteStr( str, len );
+    sprintf( str, "%.3f,", MS4525DO.airspeed );    
+    E32TTl100_WriteStr( str ); 
+    // SD_WriteStr( str );
 
     // Longitude Lattitude
     // sprintf( str,"Longitude:%ldDeg%.5fm Lattitude:%ldDeg%.5fm",stcLonLat.lLon/10000000,(double)(stcLonLat.lLon % 10000000)/1e5,stcLonLat.lLat/10000000,(double)(stcLonLat.lLat % 10000000)/1e5);
-    sprintf( str,"%ld%.5f,%ld%.5f,",stcLonLat.lLon/10000000,(double)(stcLonLat.lLon % 10000000)/1e5,stcLonLat.lLat/10000000,(double)(stcLonLat.lLat % 10000000)/1e5);
-    len = strlen( str );    
-    E32TTl100_WriteStr( str, len ); 
-    // SD_WriteStr( str, len );
+    sprintf( str,"%ld%.5f,%ld%.5f,",stcLonLat.lLon/10000000,(double)(stcLonLat.lLon % 10000000)/1e5,stcLonLat.lLat/10000000,(double)(stcLonLat.lLat % 10000000)/1e5);   
+    E32TTl100_WriteStr( str ); 
+    // SD_WriteStr( str );
     
     /*
     sprintf( str,"Time:20%d-%d-%d %d:%d:%d\r\n",stcTime.ucYear,stcTime.ucMonth,stcTime.ucDay,stcTime.ucHour,stcTime.ucMinute, stcTime.ucSecond );
-    E32TTl100_WriteStr( str, strlen( str ) ); 
-    SD_WriteStr( str, strlen( str ) );
+    E32TTl100_WriteStr( str ); 
+    SD_WriteStr( str );
 
     sprintf( str, "jy901 rx len %d\r\n", g_u32comRbytes );
-    E32TTl100_WriteStr( str, strlen( str ) );
+    E32TTl100_WriteStr( str );
     */
     // --------------------------------------------
     #endif
 
     # if 1
     sprintf( str, "%.3f\r\n", AirPlane_z_force );
-    len = strlen( str );
-    E32TTl100_WriteStr( str, len );
-    // SD_WriteStr( str, len );
+    E32TTl100_WriteStr( str );
+    // SD_WriteStr( str );
     # endif
 
     #if 0    
     sprintf( str, "%.3f,%.3f,%.3f,%.3f\r\n", stcQuaternion.q0, stcQuaternion.q1, stcQuaternion.q2, stcQuaternion.q3 );
-    len = strlen( str );
-    E32TTl100_WriteStr( str, len );
+    E32TTl100_WriteStr( str );
 
     // Acc
     sprintf( str, "%.3f,%.3f,%.3f\r\n", stcAcc.Ax, stcAcc.Ay, stcAcc.Az );
-    E32TTl100_WriteStr( str, strlen( str ) ); 
+    E32TTl100_WriteStr( str ); 
     #endif
     
 }

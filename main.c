@@ -198,7 +198,7 @@ int32_t main(void)
 
 	AirPlane_Init();
 
-	SD_WriteStr( "Airplane on \r\n", strlen( "Airplane on \r\n" ) );
+	SD_WriteStr( "Airplane on \r\n" );
 
 	for( ; ; )
 	{
@@ -210,7 +210,7 @@ int32_t main(void)
 
         AirPlane_Process( );
 
-        // E32TTL100_Process( );
+        E32TTL100_Process( );
 
 		TM_Process( );
 	}
