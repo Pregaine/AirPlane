@@ -1054,7 +1054,7 @@ BYTE SD_WriteStr( char * str )
 
     for( ; str[ i ] != 0; i ++ )
 
-    len = i;
+    len = i + 1;
 
 	if ( SD_Buffer_Size == 0 )
 	{

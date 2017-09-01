@@ -48,8 +48,8 @@ void MS4525DO_Read_DF4( void )
         
         MS4525DO.temperature = ( ( float ) MS4525DO.rawtemperature * 0.09770395701f ) - 50;
 
-        printf( "MS4525DO.rawpressure:%d\r\n", MS4525DO.rawpressure );
-        printf( "MS4525DO.temperature:%.2f\r\n", MS4525DO.temperature );
+        // printf( "MS4525DO.rawpressure:%d\r\n", MS4525DO.rawpressure );
+        // printf( "MS4525DO.temperature:%.2f\r\n", MS4525DO.temperature );
     }
     else 
     {
