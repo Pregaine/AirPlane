@@ -73,11 +73,13 @@ void AirPlane_Process( void )
 	TM_StartTimer( AirPlane.tmr );
     //---------------------------------------------
     
-    // AirPlane.x_rudder = stcAngle.Roll;
-    // AirPlane.y_rudder = stcAngle.Pitch;
-
+    #if( _AIRPLANE_DEBUG == 0 )
     AirPlane.x_rudder = PID_Row.Out;
     AirPlane.y_rudder = PID_Pitch.Out;
+    #else
+    AirPlane.x_rudder = stcAngle.Roll;
+    AirPlane.y_rudder = stcAngle.Pitch;
+    #endif
     //---------------------------------------------
 
     // up +180 -180 down +180 -180 y

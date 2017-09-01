@@ -21,6 +21,7 @@ typedef struct
 }_AirPlane;
 
 #define _AIRPLANE_TMR 50    // 30mSec
+#define _AIRPLANE_DEBUG 1
 
 extern float AirPlane_z_force;
 extern _PID PID_Pitch;
