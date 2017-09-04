@@ -11,7 +11,7 @@
 #include "gpio.h"
 #include "MS4525DO.h"
 
-#define _E32TTL100_RXBUFSIZE 128
+#define _E32TTL100_RXBUFSIZE 512
 #define G_LED1 PC3_DOUT
 
 #define _PID_BUFSIZE 64
@@ -144,6 +144,7 @@ void E32TTl100_WriteStr( char *buf )
 	{
 	    // Set the array size to 0
 		// buf overflow	
+		printf( "buf overflow" );
 	}
 	#endif
 }
@@ -275,7 +276,7 @@ void E32TTL100_Process( void )
     // SD_WriteStr( str );
     #endif
 
-    #if 0
+    #if 1
     // Acc
     sprintf( str, ",%.2f,%.2f,%.2f", stcAcc.Ax, stcAcc.Ay, stcAcc.Az );
     E32TTl100_WriteStr( str ); 
@@ -285,7 +286,9 @@ void E32TTL100_Process( void )
 	sprintf( str, ",%.2f,%.2f,%.2f", stcGyro.Wx, stcGyro.Wy, stcGyro.Wz );
     E32TTl100_WriteStr( str );  
     // SD_WriteStr( str );
-
+    #endif
+    
+    #if 1
     // Mag 
 	sprintf( str,",%d,%d,%d", stcMag.Hx, stcMag.Hy, stcMag.Hz );
     E32TTl100_WriteStr( str );  

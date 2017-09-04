@@ -19,7 +19,7 @@ typedef struct
 
 #define G_LED1 PC3_DOUT
 
-u8 ch_offset[] = { 6, 0 };
+u8 ch_offset[] = { 10, 0 };
 
 
 // 2000uSec ~ 1000uSec 180 ~ 0
@@ -41,8 +41,8 @@ void Servo_Config( u8 ch, s16 degree )
 {
     u8 offset = ch_offset[ ch ];
 
-    if( degree > ( 180 - 45 + offset ) )
-        degree = ( 180 - 45 + offset );
+    if( degree > ( 90 + 45 + offset ) )
+        degree = ( 90 + 45 + offset );
 
     if( degree < ( 45 + offset ) )
         degree = ( 45 + offset );

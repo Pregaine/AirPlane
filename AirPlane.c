@@ -59,7 +59,6 @@ void AirPlane_Process( void )
     // 俯仰角（y 轴） Pitch=((PitchH<<8)|PitchL)/32768*180(°) 
     // stcAngle.Roll range  = + / - 180
     // stcAngle.Pitch range = + / - 180
-	int val = 1;
 	static int r_rudder = 0, l_rudder = 0;
 	// int x_sum = 0, y_sum = 0;
 
@@ -74,8 +73,8 @@ void AirPlane_Process( void )
     //---------------------------------------------
     
     #if( _AIRPLANE_DEBUG == 0 )
-    AirPlane.x_rudder = PID_Row.Out;
-    AirPlane.y_rudder = PID_Pitch.Out;
+    // AirPlane.x_rudder = PID_Row.Out;
+    // AirPlane.y_rudder = PID_Pitch.Out;
     #else
     AirPlane.x_rudder = stcAngle.Roll;
     AirPlane.y_rudder = stcAngle.Pitch;
@@ -94,11 +93,11 @@ void AirPlane_Process( void )
 
     // 右舵pwm
     if( r_rudder != AirPlane.moment_right_rudder )
-        Servo_Config( 0, ( AirPlane.moment_right_rudder * val ) + 96 );
+        Servo_Config( 0, ( AirPlane.moment_right_rudder ) + 90 );
 
     // 左舵pwm
     if( l_rudder != AirPlane.moment_left_rudder )
-        Servo_Config( 1, ( AirPlane.moment_left_rudder * val ) + 90 );
+        Servo_Config( 1, ( AirPlane.moment_left_rudder ) + 90 );
 
     r_rudder = AirPlane.moment_right_rudder;
     l_rudder = AirPlane.moment_left_rudder;

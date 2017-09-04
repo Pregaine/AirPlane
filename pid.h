@@ -32,7 +32,7 @@ void( *calc )( );                                   //函數指針：指向PID�
 }_PID;
 
 // 定義PID控制器的初始值
-#define _PID_DEFAULTS { 0, 0, 0, 0, 0.02f, 0, 0, 0, 0, 0, 0, 0, 0, 180, -180, pid_calc } // 加與不加強制類型轉換都沒影響
+#define _PID_DEFAULTS { 0, 0, 0, 0, 0.02f, 0, 0, 0, 0, 0, 0, 0, 0, 45, -45, pid_calc } // 加與不加強制類型轉換都沒影響
 
 #define _PID_DEBUG 1
 
